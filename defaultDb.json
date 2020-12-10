@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "author": "Esenin",
+        "book_name": "Den chudesniy",
+        "publish_date": "10/10/2010",
+        "stock": true,
+        "debtors_name": "",
+        "return_date": ""
+    },
+    {
+        "id": 2,
+        "author": "Pushkin",
+        "book_name": "Pogib poet",
+        "publish_date": "10/09/2001",
+        "stock": false,
+        "debtors_name": "Victor",
+        "return_date": "10/10/2020"
+    },
+    {
+        "id": 3,
+        "author": "Vasilich",
+        "book_name": "Den boyarishnick",
+        "publish_date": "10/12/2020",
+        "stock": false,
+        "debtors_name": "Oleh",
+        "return_date": "15/12/2020"
+    },
+    {
+        "id": 4,
+        "author": "Jon Doe",
+        "book_name": "codders",
+        "publish_date": "01/01/2001",
+        "stock": true,
+        "debtors_name": "",
+        "return_date": ""
+    }
+]
