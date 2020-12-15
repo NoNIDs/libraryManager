@@ -1,0 +1,34 @@
+$dark: #000;
+// Common styles
+html {
+   font-family: Roboto, sans-serif;
+}
+
+// NavBar Component styles
+.navbar-auth-block {
+   display: flex;
+   justify-content: space-between;
+   & p {
+      margin-right: 3rem;
+   }
+}
+
+// Login Page styles
+
+// Dashboard Page styles
+.books-main-menu {
+   display: flex;
+   align-items: center;
+   &-createBtn {
+      display: block;
+      padding: 0.5rem;
+      width: 8rem;
+      height: 1rem;
+      text-align: center;
+      text-decoration-line: none;
+      color: $dark;
+      border: 1px solid $dark;
+      border-radius: 4px;
+   }
+}
+// Modal Component styles

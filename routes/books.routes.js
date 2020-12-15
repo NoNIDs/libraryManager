@@ -1,86 +1,79 @@
 const { Router } = require("express");
 const auth = require("../middleware");
 
+const Book = require("../models/Book");
 const router = Router();
-var client;
 
 // GET Books API - api/books/
-router.get("/", async (req, res) => {
-   // const sort = req.query.sort;
-   const books_array = [];
-   client.smembers("books", function (err, books_list) {
-      if (err) {
+router.get("/", auth, async (req, res) => {
+   try {
+      const sort = req.query.sort;
+      let books = [];
+      switch (sort) {
+         case "stock":
+            books = await Book.find({ stock: true });
+            break;
+         case "expired":
+            books = await Book.find({ stock: false });
+            if (books.length) {
+               current_date = new Date();
+               books = books.filter((book_obj) => {
+                  return_date = new Date(book_obj.return_date);
+                  return current_date > return_date;
+               });
+            }
+            break;
+         default:
+            books = await Book.find();
+      }
+      res.json(books);
+   } catch (e) {
+      res.status(500).json({
+         message: "Something went wrong. Please try again",
+      });
+   }
+});
+
+// CREATE Books API - api/books/create
+router.post("/create", auth, async (req, res) => {
+   try {
+      const book = new Book({ ...req.body });
+      await book.save();
+
+      res.status(201).json({ book });
+   } catch (error) {
+      res.status(500).json({
+         message: "Something went wrong. Please try again",
+      });
+   }
+});
+
+// EDIT Books API - api/books/edit/:id
+router.put("/edit/:id", auth, async (req, res) => {
+   const updateObj = { ...req.body };
+   await Book.findByIdAndUpdate(
+      req.params.id,
+      updateObj,
+      { new: true },
+      (err, book) => {
+         if (err)
+            res.status(500).json({
+               message: "Something went wrong. Please try again",
+            });
+         res.json({ book });
+      }
+   );
+});
+
+// DELETE Books API - api/books/delete/:id
+router.delete("/delete/:id", auth, async (req, res) => {
+   await Password.findByIdAndRemove(req.params.id, (err, doc) => {
+      if (err)
          res.status(500).json({
             message: "Something went wrong. Please try again",
          });
-      }
-      // if (sort) res.json(sort_data(sort, data));
-      for (book in books_list) {
-         client.get(book, function (err, book_data) {
-            books_array.push(book_data);
-         });
-      }
-      res.json(books_array);
+      res.json({ message: "Password was removed successfully" });
    });
 });
 
-// // POST Books API - api/books/create
-// router.post("/create", auth, async (req, res) => {
-//    const book = req.body;
-//    client.hmset("books", book, function (err, data) {
-//       if (err) {
-//          res.status(500).json({
-//             message: "Something went wrong. Please try again",
-//          });
-//       }
-//       res.status(201).json({ book });
-//    });
-// });
-
-// // POST Books API - api/books/create
-// router.put("/edit/:id", auth, async (req, res) => {
-//    const id_book = req.params.id;
-//    let find_book = find(id_book);
-//    find_book = req.body;
-//    client.hmset("books", book, function (err, data) {
-//       if (err) {
-//          res.status(500).json({
-//             message: "Something went wrong. Please try again",
-//          });
-//       }
-//       res.status(201).json({ book });
-//    });
-// });
-
-// const sort_data = (sort_value, data) => {
-//    switch (sort_value) {
-//       case "stock":
-//          return data.filter((obj) => obj.stock);
-//       case "expired":
-//          current_date = new Date();
-//          return data.filter((obj) => {
-//             obj_date = new Date(obj.return_date);
-//             return !obj.stock && obj_date.getTime() < current_date.getTime();
-//          });
-//    }
-// };
-
-// const find = (id) => {
-//    let data = {};
-//    client.hmgetall("books", function (err, data) {
-//       if (err) {
-//          res.status(500).json({
-//             message: "Something went wrong. Please try again",
-//          });
-//       }
-//       data = data.filter((obj) => obj.id === id);
-//    });
-//    return data;
-// };
-
-module.exports = {
-   setClient: function (inClient) {
-      client = inClient;
-   },
-   router,
-};
+module.exports = router;

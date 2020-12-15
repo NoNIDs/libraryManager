@@ -2,9 +2,9 @@ import { createContext } from "react";
 
 function noop() {} //plug function
 
-export const AuthContext = createContext({
-   userId: null,
-   login: noop,
-   logout: noop,
+export const AppContext = createContext({
    isAuthenticated: false,
+   username: "",
+   login: noop(),
+   logout: noop(),
 });

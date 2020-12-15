@@ -1,0 +1,5 @@
+{
+    "port": 8000,
+    "jwtSecret": "libmanager",
+    "mongoUri": "mongodb+srv://vaysberg:qazwsxedc@cluster0.tsapp.mongodb.net/libraryManager?retryWrites=true&w=majority"
+}
