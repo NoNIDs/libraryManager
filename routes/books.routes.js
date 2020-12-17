@@ -18,7 +18,7 @@ router.get("/", auth, async (req, res) => {
             if (books.length) {
                current_date = new Date();
                books = books.filter((book_obj) => {
-                  return_date = new Date(book_obj.return_date);
+                  return_date = new Date(book_obj.returnDate);
                   return current_date > return_date;
                });
             }
@@ -67,12 +67,12 @@ router.put("/edit/:id", auth, async (req, res) => {
 
 // DELETE Books API - api/books/delete/:id
 router.delete("/delete/:id", auth, async (req, res) => {
-   await Password.findByIdAndRemove(req.params.id, (err, doc) => {
+   await Book.findByIdAndRemove(req.params.id, (err, doc) => {
       if (err)
          res.status(500).json({
             message: "Something went wrong. Please try again",
          });
-      res.json({ message: "Password was removed successfully" });
+      res.json({ message: "Book was removed successfully" });
    });
 });
 

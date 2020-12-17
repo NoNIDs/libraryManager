@@ -7,4 +7,5 @@ export const AppContext = createContext({
    username: "",
    login: noop(),
    logout: noop(),
+   message: noop(),
 });

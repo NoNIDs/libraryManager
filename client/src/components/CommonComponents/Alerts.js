@@ -1,23 +1,19 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
+import React, { Component, Fragment } from "react";
+import { withAlert } from "react-alert";
 
-const useStyles = makeStyles((theme) => ({
-   root: {
-      width: "100%",
-      "& > * + *": {
-         marginTop: theme.spacing(2),
-      },
-   },
-}));
+export class Alerts extends Component {
+   componentDidUpdate(prevProps) {
+      const { type, alert, message } = this.props;
+      if (type === "success") {
+         alert.success(message);
+      } else if (type === "error") {
+         alert.error(message);
+      }
+   }
 
-export const AlertLayout = ({ type, message }) => {
-   const classes = useStyles();
-   return (
-      <div className={classes.root}>
-         <Alert variant="outlined" severity={type}>
-            {message}
-         </Alert>
-      </div>
-   );
-};
+   render() {
+      return <Fragment />;
+   }
+}
+
+export default withAlert()(Alerts);

@@ -45,7 +45,7 @@ router.post(
          }
 
          const token = jwt.sign(
-            { userId: user.id },
+            { userId: user._id },
             config.get("jwtSecret"),
             { expiresIn: "1h" } // the token will exist for 1 hour
          );

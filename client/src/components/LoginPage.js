@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
-import { Redirect } from "react-router-dom";
-import { AppContext } from "../context/app.context";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 import { TextField, Button } from "@material-ui/core";
 
+import { AppContext } from "../context/app.context";
+
 function LoginPage() {
-   const appContext = useContext(AppContext);
+   const { login, message, isAuthenticated } = useContext(AppContext);
    const [form, setForm] = useState({ username: "", password: "" });
 
    const changeHandler = (event) => {
@@ -20,17 +21,18 @@ function LoginPage() {
       axios
          .post("/api/auth/login", { ...form }, headers)
          .then((res) => {
-            appContext.login(res.data.username, res.data.token);
+            login(res.data.username, res.data.token);
          })
-         .catch((err) => console.log("LOGIN PIZDA"));
+         .catch((err) => message("error", err.response.data.message));
    };
 
-   if (appContext.isAuthenticated) {
+   if (isAuthenticated) {
       return <Redirect to="/dashboard" />;
    }
 
    return (
       <div className="login-form-container">
+         <h1 className="login-form-title">Login</h1>
          <form onSubmit={loginHandler}>
             <TextField
                id="outlined-username-input"
